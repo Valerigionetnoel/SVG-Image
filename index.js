@@ -15,44 +15,63 @@ create a text el
 
 const fs = require('fs')
 const inquirer = require('inquirer')
-const {Triangle, Square, Circle} = require('./lib/Shape.js')
+const { Shape, Triangle, Square, Circle } = require('./lib/Shape.js')
 
-inquirer.prompt ([
+inquirer.prompt([
     {
-        type:'input',
-        message:'What are 3 character that you would like in the shape?',
-        name:'character',
+        type: 'input',
+        message: 'What are 3 character that you would like in the shape?',
+        name: 'character',
     },
     {
-        type:'input',
-        message:'What color? It can be hex',
-        name:'color',
+        type: 'input',
+        message: 'What color are the letter? It can be hex',
+        name: 'colorLetter',
     },
     {
         type: 'list',
         message: 'What shape is it?',
-        choices: ['Circle', 'Square', 'Triangle'],
+        choices: ['circle', 'square', 'triangle'],
         name: 'shape'
     },
-    // {
-    //     type:'input',
-    //     message:'',
-    //     name:'',
-    // },
+    {
+        type:'input',
+        message:'What color is the shape? It can be hex',
+        name:'col',
+    },
 ]).then((response) => {
-    const Shape = {
-        if (${response.shape} === 'Circle') {
-            return new Circle ();
-        }else if (${response.shape} === 'Square'){
-            return new Square();
-        }else if (${response.shape} === 'Triangle'){
-            return new Triangle();
-        }
+    var shapeOne = `${response.shape}` 
+
+        switch (shapeOne) {
+            case 'circle':
+                new Circle();
+                break;
+            case 'square':
+                new Square();
+                break;
+            case 'triangle':
+                new Triangle();
+                break;
+            default:
+                break;
+        
     }
     
+    console.log(shapeOne)
+    fs.writeFile(`${response.shape}.svg`, shapeOne.render(), (err) => {
+
+    })
+})
+
+// {
+    //     if (${response.shape} === 'Circle') {
+    //         return new Circle ();
+    //     }else if (${response.shape} === 'Square'){
+    //         return new Square();
+    //     }else if (${response.shape} === 'Triangle'){
+    //         return new Triangle();
+    //     }
+    // }
+
     // if the shape is (circle triangle square) make that shape
     // const cir = new Circle()
-fs.writeFile('shape.svg', Shape.render(), (err) => {
-
-} )})
-
