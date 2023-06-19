@@ -15,18 +15,21 @@ create a text el
 
 const fs = require('fs')
 const inquirer = require('inquirer')
-const { Shape, Triangle, Square, Circle } = require('./lib/Shape.js')
+const { Shape, Triangle, Square, Circle, createSVG } = require('./lib/Shape.js')
 
 inquirer.prompt([
     {
         type: 'input',
         message: 'What are 3 character that you would like in the shape?',
-        name: 'character',
+        name: 'text',
+        validate: function (input) {
+            return input.length <= 3;
+        }
     },
     {
         type: 'input',
         message: 'What color are the letter? It can be hex',
-        name: 'colorLetter',
+        name: 'textColor',
     },
     {
         type: 'list',
@@ -35,31 +38,32 @@ inquirer.prompt([
         name: 'shape'
     },
     {
-        type:'input',
-        message:'What color is the shape? It can be hex',
-        name:'col',
+        type: 'input',
+        message: 'What color is the shape? It can be hex',
+        name: 'shapeColor',
     },
-]).then((response) => {
-    var shapeOne = `${response.shape}` 
+]).then((answers) => {
+    var svgContent = createSVG(answers) 
 
-        switch (shapeOne) {
-            case 'circle':
-                new Circle();
-                break;
-            case 'square':
-                new Square();
-                break;
-            case 'triangle':
-                new Triangle();
-                break;
-            default:
-                break;
-        
-    }
-    
-    console.log(shapeOne)
-    fs.writeFile(`${response.shape}.svg`, shapeOne.render(), (err) => {
+    // switch (answers.shape) {
+    //     case 'circle':
+    //         svgContent = new Circle();
+    //         break;
+    //     case 'square':
+    //         svgContent = new Square();
+    //         break;
+    //     case 'triangle':
+    //         svgContent = new Triangle();
+    //         break;
+    //     default:
+    //         break;
 
+    // }
+
+    console.log(svgContent)
+    fs.writeFile(`logo.svg`, svgContent, (err) => {
+        if (err) throw err;
+        console.log('Generated logo.svg')
     })
 })
 
